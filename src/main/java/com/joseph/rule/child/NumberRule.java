@@ -1,4 +1,6 @@
-package com.joseph.rule;
+package com.joseph.rule.child;
+
+import com.joseph.rule.Rule;
 
 /**
  * NumberRule is a rule that validates a number.

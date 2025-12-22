@@ -1,4 +1,6 @@
-package com.joseph.rule;
+package com.joseph.rule.child;
+
+import com.joseph.rule.Rule;
 
 import java.util.regex.Pattern;
 
@@ -43,5 +45,34 @@ public class StringRule extends Rule<String, StringRule> {
     public StringRule matches(String regex) {
         if (value != null && !Pattern.matches(regex, value)) violations.add("must match pattern " + regex);
         return this;
+    }
+
+    /**
+     * Validates that the string has a length between min and max.
+     * @param min Minimum length
+     * @param max Maximum length
+     * @return StringRule
+     */
+    public StringRule length(int min, int max) {
+        if (value != null && (value.length() < min || value.length() > max)) violations.add("must be between " + min + " and " + max + " characters");
+        return this;
+    }
+
+    /**
+     * Validates that the string has a minimum length.
+     * @param min Minimum length
+     * @return StringRule
+     */
+    public StringRule minLength(int min) {
+        return length(min, Integer.MAX_VALUE);
+    }
+
+    /**
+     * Validates that the string has a maximum length.
+     * @param max Maximum length
+     * @return StringRule
+     */
+    public StringRule maxLength(int max) {
+        return length(0, max);
     }
 }
