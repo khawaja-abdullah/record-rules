@@ -32,7 +32,7 @@
     <scm>
         <connection>scm:git:git://github.com/JosephMeghanathD/record-rules.git</connection>
         <developerConnection>scm:git:ssh://github.com:JosephMeghanathD/record-rules.git</developerConnection>
-        <url>https://github.com/JosephMeghanathD/record-rules/tree/main</url>
+        <url>https://josephmeghanathd.github.io/record-rules/index.html</url>
     </scm>
 
     <properties>
