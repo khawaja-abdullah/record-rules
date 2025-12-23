@@ -1,4 +1,4 @@
-# 🚀 RecordRules v1.0.1 — Initial Release
+# 🚀 RecordRules v1.0.3 — Initial Release
 
 RecordRules provides a clean, readable way to enforce business logic and data integrity within Java Records. By leveraging the compact constructor pattern, it allows developers to validate fields and collect all violations into a single, structured exception.
 
