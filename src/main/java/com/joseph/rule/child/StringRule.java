@@ -15,7 +15,7 @@ public class StringRule extends Rule<String, StringRule> {
      * @param value Value to validate
      * @param name Field name
      */
-    public StringRule(String value, String name) {
+    public StringRule(final String value, final String name) {
         super(value, name);
     }
 
@@ -42,7 +42,7 @@ public class StringRule extends Rule<String, StringRule> {
      * @param regex Regex to match
      * @return StringRule
      */
-    public StringRule matches(String regex) {
+    public StringRule matches(final String regex) {
         if (value != null && !Pattern.matches(regex, value)) violations.add("must match pattern " + regex);
         return this;
     }
@@ -53,7 +53,7 @@ public class StringRule extends Rule<String, StringRule> {
      * @param max Maximum length
      * @return StringRule
      */
-    public StringRule length(int min, int max) {
+    public StringRule length(final int min, final int max) {
         if (value != null && (value.length() < min || value.length() > max)) violations.add("must be between " + min + " and " + max + " characters");
         return this;
     }
@@ -63,7 +63,7 @@ public class StringRule extends Rule<String, StringRule> {
      * @param min Minimum length
      * @return StringRule
      */
-    public StringRule minLength(int min) {
+    public StringRule minLength(final int min) {
         return length(min, Integer.MAX_VALUE);
     }
 
@@ -72,7 +72,7 @@ public class StringRule extends Rule<String, StringRule> {
      * @param max Maximum length
      * @return StringRule
      */
-    public StringRule maxLength(int max) {
+    public StringRule maxLength(final int max) {
         return length(0, max);
     }
 }
