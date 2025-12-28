@@ -26,12 +26,12 @@ jobs:
 
       - name: Build Maven Site
         run: |
-          mvn -B clean verify site
+          mvn clean javadoc:javadoc -f pom-ci.xml
 
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
-          publish_dir: target/site
+          publish_dir: target/site/apidocs
           force_orphan: true
