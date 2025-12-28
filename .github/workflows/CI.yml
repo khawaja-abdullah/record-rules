@@ -9,48 +9,63 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+
     permissions:
       contents: read
-      checks: write        # CRITICAL for Test Summary
-      pull-requests: write # CRITICAL for JaCoCo reports
+      checks: write
+      pull-requests: write
       actions: read
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Set up JDK 21
+      # --------------------------------
+      # Java (MATCHES YOUR POM: Java 17)
+      # --------------------------------
+      - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
-          java-version: '21'
-          distribution: 'temurin'
-          cache: 'maven'
+          distribution: temurin
+          java-version: 17
+          cache: maven
 
+      # --------------------------------
+      # Build + Tests + JaCoCo
+      # --------------------------------
       - name: Build and Test with Coverage
-        # Using -f pom-ci.xml
-        run: mvn -f pom-ci.xml clean verify site
+        run: mvn -f pom-ci.xml clean verify
 
+      # --------------------------------
+      # Test Results (Passed / Failed)
+      # --------------------------------
       - name: Publish Test Summary
+        if: always()
         uses: test-summary/action@v2
-        if: always()
         with:
-          paths: "target/surefire-reports/TEST-*.xml"
+          paths: target/surefire-reports/TEST-*.xml
 
+      # --------------------------------
+      # JaCoCo Coverage Summary (PR Comment)
+      # --------------------------------
       - name: Publish JaCoCo Summary
-        uses: madrapps/jacoco-report@v1.7.1
         if: always()
+        uses: madrapps/jacoco-report@v1.7.1
         with:
-          paths: ${{ github.workspace }}/target/site/jacoco/jacoco.xml
+          paths: target/site/jacoco/jacoco.xml
           token: ${{ github.token }}
-          min-coverage-overall: 90
-          min-coverage-changed-files: 90
-          title: "Code Coverage Report"
+          min-coverage-overall: 95
+          min-coverage-changed-files: 95
+          title: "JaCoCo Coverage Report"
           update-comment: true
 
-      - name: Upload Full Reports
+      # --------------------------------
+      # Upload FULL JaCoCo HTML UI
+      # (Exactly like local index.html)
+      # --------------------------------
+      - name: Upload JaCoCo HTML Report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: full-reports
-          path: |
-            target/site/surefire-report.html
-            target/site/jacoco/
+          name: jacoco-html-report
+          path: target/site/jacoco
