@@ -1,6 +1,7 @@
 package com.joseph.rule;
 
 import com.joseph.RecordRules;
+import com.joseph.exception.RecordValidationException;
 import com.joseph.rule.child.DateRule;
 import com.joseph.rule.child.NumberRule;
 import com.joseph.rule.child.ObjectRule;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.util.List;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 
 class RuleTest {
@@ -102,5 +104,20 @@ class RuleTest {
         // Verify formatted string: "childField [error_message]"
         assertTrue(violations.get(0).contains("childField"));
         assertTrue(violations.get(0).contains("must match pattern"));
+    }
+
+    @Test
+    void shouldHandleNullLong_WithoutThrowingNPE() {
+        record TestRecord(Long someLongField) {
+            TestRecord {
+                RecordRules.check(
+                        Rule.on(someLongField, "someLongField").required()
+                );
+            }
+        }
+        assertThatThrownBy(() -> new TestRecord(null))
+                .isInstanceOf(RecordValidationException.class)
+                .hasMessageContaining("someLongField")
+                .hasMessageContaining("must not be null");
     }
 }

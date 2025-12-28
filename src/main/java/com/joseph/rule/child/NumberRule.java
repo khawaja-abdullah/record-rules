@@ -4,14 +4,16 @@ import com.joseph.rule.Rule;
 
 /**
  * NumberRule is a rule that validates a number.
+ * Supports any numeric type (Integer, Long, etc.).
  */
-public class NumberRule extends Rule<Integer, NumberRule> {
+public class NumberRule extends Rule<Number, NumberRule> {
+
     /**
      * NumberRule constructor.
      * @param value Value to validate
      * @param name Field name
      */
-    public NumberRule(Integer value, String name) {
+    public NumberRule(Number value, String name) {
         super(value, name);
     }
 
@@ -20,8 +22,10 @@ public class NumberRule extends Rule<Integer, NumberRule> {
      * @param min Minimum value
      * @return NumberRule
      */
-    public NumberRule min(int min) {
-        if (value != null && value < min) violations.add("must be at least " + min);
+    public NumberRule min(Number min) {
+        if (value != null && value.doubleValue() < min.doubleValue()) {
+            violations.add("must be at least " + min);
+        }
         return this;
     }
 
@@ -30,8 +34,10 @@ public class NumberRule extends Rule<Integer, NumberRule> {
      * @param max Maximum value
      * @return NumberRule
      */
-    public NumberRule max(int max) {
-        if (value != null && value > max) violations.add("must be at most " + max);
+    public NumberRule max(Number max) {
+        if (value != null && value.doubleValue() > max.doubleValue()) {
+            violations.add("must be at most " + max);
+        }
         return this;
     }
 }

@@ -67,7 +67,7 @@ public abstract class Rule<T, R extends Rule<T, R>> {
      * @return NumberRule
      */
     public static NumberRule on(Long value, String name) {
-        return new NumberRule(value.intValue(), name);
+        return new NumberRule(value, name);
     }
 
     /**
@@ -103,9 +103,8 @@ public abstract class Rule<T, R extends Rule<T, R>> {
             try {
                 nestedValidator.accept(value);
             } catch (RecordValidationException e) {
-                e.getErrors().forEach((nestedField, nestedErrors) -> {
-                    violations.add(nestedField + " " + nestedErrors);
-                });
+                e.getErrors().forEach((nestedField, nestedErrors) ->
+                        violations.add(nestedField + " " + nestedErrors));
             }
         }
         return self();
