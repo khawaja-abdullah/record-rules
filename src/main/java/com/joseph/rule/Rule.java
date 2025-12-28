@@ -35,7 +35,7 @@ public abstract class Rule<T, R extends Rule<T, R>> {
      * @param value Value to validate
      * @param fieldName Field name
      */
-    protected Rule(T value, String fieldName) {
+    protected Rule(final T value, final String fieldName) {
         this.value = value;
         this.fieldName = fieldName;
     }
@@ -46,7 +46,7 @@ public abstract class Rule<T, R extends Rule<T, R>> {
      * @param name Field name
      * @return StringRule
      */
-    public static StringRule on(String value, String name) {
+    public static StringRule on(final String value, final String name) {
         return new StringRule(value, name);
     }
 
@@ -56,7 +56,7 @@ public abstract class Rule<T, R extends Rule<T, R>> {
      * @param name Field name
      * @return NumberRule
      */
-    public static NumberRule on(Integer value, String name) {
+    public static NumberRule on(final Integer value, final String name) {
         return new NumberRule(value, name);
     }
 
@@ -66,7 +66,7 @@ public abstract class Rule<T, R extends Rule<T, R>> {
      * @param name Field name
      * @return NumberRule
      */
-    public static NumberRule on(Long value, String name) {
+    public static NumberRule on(final Long value, final String name) {
         return new NumberRule(value, name);
     }
 
@@ -77,7 +77,7 @@ public abstract class Rule<T, R extends Rule<T, R>> {
      * @param name Field name
      * @return the current rule
      */
-    public static <T> ObjectRule<T> on(T value, String name) {
+    public static <T> ObjectRule<T> on(final T value, final String name) {
         return new ObjectRule<>(value, name);
     }
 
@@ -87,7 +87,7 @@ public abstract class Rule<T, R extends Rule<T, R>> {
      * @param name Field name
      * @return the current rule
      */
-    public static DateRule on(java.time.LocalDate value, String name) {
+    public static DateRule on(final java.time.LocalDate value, final String name) {
         return new DateRule(value, name);
     }
 
@@ -98,7 +98,7 @@ public abstract class Rule<T, R extends Rule<T, R>> {
      * @param nestedValidator Nested validator
      * @return the current rule
      */
-    public R check(Consumer<T> nestedValidator) {
+    public R check(final Consumer<T> nestedValidator) {
         if (value != null) {
             try {
                 nestedValidator.accept(value);
@@ -149,7 +149,7 @@ public abstract class Rule<T, R extends Rule<T, R>> {
      * @param predicate Predicate to validate
      * @return the current rule
      */
-    public R satisfies(Predicate<T> predicate) {
+    public R satisfies(final Predicate<T> predicate) {
         return satisfies(predicate, "must satisfy predicate");
     }
 
@@ -159,7 +159,7 @@ public abstract class Rule<T, R extends Rule<T, R>> {
      * @param message Message to display if the predicate is not satisfied
      * @return the current rule
      */
-    public R satisfies(Predicate<T> predicate, String message) {
+    public R satisfies(final Predicate<T> predicate, final String message) {
         if (value != null && !predicate.test(value)) violations.add(message);
         return self();
     }
@@ -169,7 +169,7 @@ public abstract class Rule<T, R extends Rule<T, R>> {
      * @param customMessage Custom message to display
      * @return the current rule
      */
-    public R message(String customMessage) {
+    public R message(final String customMessage) {
         if (!violations.isEmpty()) {
             violations.remove(violations.size() - 1);
             violations.add(customMessage);

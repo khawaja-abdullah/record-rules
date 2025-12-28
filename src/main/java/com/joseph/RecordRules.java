@@ -10,12 +10,12 @@ import java.util.Map;
 /**
  * RecordRules is a utility class that provides a static method for validating records.
  */
-public class RecordRules {
+public final class RecordRules {
 
     /**
      * RecordRules constructor.
      */
-    public RecordRules() {
+    private RecordRules() {
     }
 
     /**
@@ -23,7 +23,7 @@ public class RecordRules {
      *
      * @param rules the rules to validate
      */
-    public static void check(Rule<?, ?>... rules) {
+    public static void check(final Rule<?, ?>... rules) {
         Map<String, List<String>> allErrors = new HashMap<>();
         for (Rule<?, ?> rule : rules) {
             if (!rule.getViolations().isEmpty()) {

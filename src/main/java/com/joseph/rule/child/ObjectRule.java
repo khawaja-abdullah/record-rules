@@ -12,7 +12,7 @@ public class ObjectRule<T> extends Rule<T, ObjectRule<T>> {
      * @param value Value to validate
      * @param name Field name
      */
-    public ObjectRule(T value, String name) {
+    public ObjectRule(final T value, final String name) {
         super(value, name);
     }
 
@@ -21,7 +21,7 @@ public class ObjectRule<T> extends Rule<T, ObjectRule<T>> {
      * @param itemValidator Validator for each item
      * @return the current rule
      */
-    public ObjectRule<T> forEach(java.util.function.BiConsumer<Object, Integer> itemValidator) {
+    public ObjectRule<T> forEach(final java.util.function.BiConsumer<Object, Integer> itemValidator) {
         if (value instanceof Iterable<?> list) {
             int i = 0;
             for (Object item : list) {
@@ -36,7 +36,7 @@ public class ObjectRule<T> extends Rule<T, ObjectRule<T>> {
      * @param min Minimum size
      * @return the current rule
      */
-    public ObjectRule<T> minSize(int min) {
+    public ObjectRule<T> minSize(final int min) {
         if (value instanceof java.util.Collection<?> col && col.size() < min) {
             violations.add("must have at least " + min + " items");
         }
@@ -48,7 +48,7 @@ public class ObjectRule<T> extends Rule<T, ObjectRule<T>> {
      * @param max Maximum size
      * @return the current rule
      */
-    public ObjectRule<T> maxSize(int max) {
+    public ObjectRule<T> maxSize(final int max) {
         if (value instanceof java.util.Collection<?> col && col.size() > max) {
             violations.add("must have at most " + max + " items");
         }

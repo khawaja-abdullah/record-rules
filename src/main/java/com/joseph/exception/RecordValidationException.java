@@ -17,7 +17,7 @@ public class RecordValidationException extends RuntimeException {
      * RecordValidationException constructor.
      * @param errors Map of field names to list of error messages
      */
-    public RecordValidationException(Map<String, List<String>> errors) {
+    public RecordValidationException(final Map<String, List<String>> errors) {
         super("Validation failed: " + formatErrors(errors));
         this.errors = errors;
     }
@@ -27,7 +27,7 @@ public class RecordValidationException extends RuntimeException {
      * @param errors Map of field names to list of error messages
      * @return String
      */
-    private static String formatErrors(Map<String, List<String>> errors) {
+    private static String formatErrors(final Map<String, List<String>> errors) {
         return errors.entrySet().stream().map(e -> e.getKey() + ": " + e.getValue()).collect(Collectors.joining(", ", "[", "]"));
     }
 

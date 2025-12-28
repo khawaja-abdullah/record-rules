@@ -13,7 +13,7 @@ public class NumberRule extends Rule<Number, NumberRule> {
      * @param value Value to validate
      * @param name Field name
      */
-    public NumberRule(Number value, String name) {
+    public NumberRule(final Number value, final String name) {
         super(value, name);
     }
 
@@ -22,7 +22,7 @@ public class NumberRule extends Rule<Number, NumberRule> {
      * @param min Minimum value
      * @return NumberRule
      */
-    public NumberRule min(Number min) {
+    public NumberRule min(final Number min) {
         if (value != null && value.doubleValue() < min.doubleValue()) {
             violations.add("must be at least " + min);
         }
@@ -34,7 +34,7 @@ public class NumberRule extends Rule<Number, NumberRule> {
      * @param max Maximum value
      * @return NumberRule
      */
-    public NumberRule max(Number max) {
+    public NumberRule max(final Number max) {
         if (value != null && value.doubleValue() > max.doubleValue()) {
             violations.add("must be at most " + max);
         }

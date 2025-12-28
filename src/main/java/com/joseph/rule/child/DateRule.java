@@ -13,7 +13,7 @@ public class DateRule extends Rule<LocalDate, DateRule> {
      * @param value Value to validate
      * @param name Field name
      */
-    public DateRule(LocalDate value, String name) {
+    public DateRule(final LocalDate value, final String name) {
         super(value, name);
     }
 
