@@ -11,8 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      checks: write # Required for test reporting
-      pull-requests: write # Required if you want PR comments
+      checks: write
+      pull-requests: write
+      actions: read
 
     steps:
       - uses: actions/checkout@v4
@@ -25,14 +26,13 @@ jobs:
           cache: 'maven'
 
       - name: Build and Test with Coverage
-        # Using -f pom-ci.xml
-        run: mvn -f pom-ci.xml clean verify site
+        run: mvn -f pom-ci.xml clean install site
 
       - name: Publish Test Summary
         uses: test-summary/action@v2
         if: always()
         with:
-          paths: "target/surefire-reports/TEST-*.xml"
+          paths: "**/target/surefire-reports/TEST-*.xml"
 
       - name: Publish JaCoCo Summary
         uses: madrapps/jacoco-report@v1.7.1
