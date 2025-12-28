@@ -222,6 +222,7 @@ class NumberRuleTest {
                 );
             }
         }
+
         assertThatThrownBy(() -> new TestRecord(null))
             .isInstanceOf(RecordValidationException.class)
             .satisfies(ex -> {
