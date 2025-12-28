@@ -1,11 +1,15 @@
 package com.joseph.rule.child;
 
+import com.joseph.RecordRules;
+import com.joseph.exception.RecordValidationException;
 import com.joseph.rule.Rule;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 
 class NumberRuleTest {
@@ -171,4 +175,61 @@ class NumberRuleTest {
         assertNotNull(rule);
         assertEquals("count", rule.getFieldName());
     }
+
+    @Test
+    void shouldThrowAndContainBothMessages_ForNumberRule_WithSeparateAssertions() {
+        record TestRecord(Integer age) {
+            TestRecord {
+                RecordRules.check(
+                    Rule.on(age, "age")
+                        .min(10).message("Too young")
+                        .max(15).message("Too old")
+                );
+            }
+        }
+
+        assertThatThrownBy(() -> new TestRecord(5))
+            .isInstanceOf(RecordValidationException.class)
+            .satisfies(ex -> {
+                var errors = ((RecordValidationException) ex)
+                    .getErrors()
+                    .get("age");
+
+                assertThat(String.join(" ", errors))
+                    .containsIgnoringCase("Too young");
+            });
+
+        assertThatThrownBy(() -> new TestRecord(25))
+            .isInstanceOf(RecordValidationException.class)
+            .satisfies(ex -> {
+                var errors = ((RecordValidationException) ex)
+                    .getErrors()
+                    .get("age");
+
+                assertThat(String.join(" ", errors))
+                    .containsIgnoringCase("Too old");
+            });
+    }
+
+    @Test
+    void shouldOverrideMessage_WhenMultipleMessagesAppliedToSameRule() {
+        record TestRecord(Integer someIntegerField) {
+            TestRecord {
+                RecordRules.check(
+                    Rule.on(someIntegerField, "someIntegerField").required()
+                        .message("must be provided")
+                        .message("is a required field")
+                );
+            }
+        }
+
+        assertThatThrownBy(() -> new TestRecord(null))
+            .isInstanceOf(RecordValidationException.class)
+            .satisfies(ex -> {
+                var errors = ((RecordValidationException) ex).getErrors().get("someIntegerField");
+                assertEquals(1, errors.size());
+                assertEquals("is a required field", errors.get(0));
+            });
+    }
+
 }
