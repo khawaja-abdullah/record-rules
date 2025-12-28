@@ -211,4 +211,24 @@ class NumberRuleTest {
             });
     }
 
+    @Test
+    void shouldOverrideMessage_WhenMultipleMessagesAppliedToSameRule() {
+        record TestRecord(Integer someIntegerField) {
+            TestRecord {
+                RecordRules.check(
+                    Rule.on(someIntegerField, "someIntegerField").required()
+                        .message("must be provided")
+                        .message("is a required field")
+                );
+            }
+        }
+        assertThatThrownBy(() -> new TestRecord(null))
+            .isInstanceOf(RecordValidationException.class)
+            .satisfies(ex -> {
+                var errors = ((RecordValidationException) ex).getErrors().get("someIntegerField");
+                assertEquals(1, errors.size());
+                assertEquals("is a required field", errors.get(0));
+            });
+    }
+
 }

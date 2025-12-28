@@ -149,4 +149,26 @@ class StringRuleTest {
             });
     }
 
+    @Test
+    void shouldMaintainSeparateMessages_ForMultipleRules() {
+        record TestRecord(String someStringField) {
+            TestRecord {
+                RecordRules.check(
+                    Rule.on(someStringField, "someStringField")
+                        .length(5, 10).message("Must be between 5 and 10 characters")
+                        .minLength(5).message("Must be at least 5 characters")
+                );
+            }
+        }
+
+        assertThatThrownBy(() -> new TestRecord("ABC"))
+            .isInstanceOf(RecordValidationException.class)
+            .satisfies(ex -> {
+                var errors = ((RecordValidationException) ex).getErrors().get("someStringField");
+                assertEquals(2, errors.size());
+                assertThat(errors.get(0)).isEqualTo("Must be between 5 and 10 characters");
+                assertThat(errors.get(1)).isEqualTo("Must be at least 5 characters");
+            });
+    }
+
 }
